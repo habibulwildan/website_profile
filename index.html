@@ -91,6 +91,127 @@
         </div>
     </div>
 
+    <!-- music player -->
+    <aside class="music" id="music" aria-label="Pemutar musik">
+        <div class="music__panel" id="music-panel" aria-hidden="true" inert data-lenis-prevent>
+            <div class="music__head">
+                <span class="music__eyebrow">Playlist — Iwan Fals</span>
+                <span class="music__note">Cuplikan 30 dtk</span>
+            </div>
+
+            <!-- Daftar lagu: ganti data-src dengan file lokal (mis. music/bento.mp3) untuk memutar versi penuh. -->
+            <ul class="music__list" id="music-list">
+                <li>
+                    <button class="music__track is-active" type="button" aria-current="true"
+                        data-src="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/73/c4/b5/73c4b5c4-dc86-a295-a19c-89eaf2cc9b6c/mzaf_17586493040438184531.plus.aac.p.m4a"
+                        data-title="Bento" data-artist="Iwan Fals &amp; Swami"
+                        data-cover="https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/71/d8/99/71d89975-e1ee-6694-7d05-ef0a9c60d91c/dj.qyacxtqj.jpg/100x100bb.jpg">
+                        <span class="music__cover"><img src="https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/71/d8/99/71d89975-e1ee-6694-7d05-ef0a9c60d91c/dj.qyacxtqj.jpg/100x100bb.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></span>
+                        <span class="music__meta"><b>Bento</b><em>Iwan Fals &amp; Swami</em></span>
+                        <span class="music__bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                    </button>
+                </li>
+                <li>
+                    <button class="music__track" type="button"
+                        data-src="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/27/7d/ef/277def30-6975-a267-394c-871fef2e12ad/mzaf_14649054181798047751.plus.aac.p.m4a"
+                        data-title="Bongkar" data-artist="Iwan Fals &amp; Swami"
+                        data-cover="https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/71/d8/99/71d89975-e1ee-6694-7d05-ef0a9c60d91c/dj.qyacxtqj.jpg/100x100bb.jpg">
+                        <span class="music__cover"><img src="https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/71/d8/99/71d89975-e1ee-6694-7d05-ef0a9c60d91c/dj.qyacxtqj.jpg/100x100bb.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></span>
+                        <span class="music__meta"><b>Bongkar</b><em>Iwan Fals &amp; Swami</em></span>
+                        <span class="music__bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                    </button>
+                </li>
+                <li>
+                    <button class="music__track" type="button"
+                        data-src="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d7/d8/4e/d7d84e5e-fddf-1dce-7a76-da196abd2f46/mzaf_8936429054581006282.plus.aac.p.m4a"
+                        data-title="Surat Buat Wakil Rakyat" data-artist="Iwan Fals"
+                        data-cover="https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/a4/35/7e/a4357eb1-5f33-6ee1-1b7c-0dd6861865ab/24UMGIM29444.rgb.jpg/100x100bb.jpg">
+                        <span class="music__cover"><img src="https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/a4/35/7e/a4357eb1-5f33-6ee1-1b7c-0dd6861865ab/24UMGIM29444.rgb.jpg/100x100bb.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></span>
+                        <span class="music__meta"><b>Surat Buat Wakil Rakyat</b><em>Iwan Fals</em></span>
+                        <span class="music__bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                    </button>
+                </li>
+                <li>
+                    <button class="music__track" type="button"
+                        data-src="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/13/d0/70/13d070fe-7500-9011-9713-941524f9901c/mzaf_9146820165365899356.plus.aac.p.m4a"
+                        data-title="Ibu" data-artist="Iwan Fals"
+                        data-cover="https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/a2/23/84/a22384ac-d72e-7616-4e7f-410c0e737696/24UMGIM29436.rgb.jpg/100x100bb.jpg">
+                        <span class="music__cover"><img src="https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/a2/23/84/a22384ac-d72e-7616-4e7f-410c0e737696/24UMGIM29436.rgb.jpg/100x100bb.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></span>
+                        <span class="music__meta"><b>Ibu</b><em>Iwan Fals</em></span>
+                        <span class="music__bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                    </button>
+                </li>
+                <li>
+                    <button class="music__track" type="button"
+                        data-src="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/1e/29/8f/1e298f06-f56c-8082-15d2-480c78a9d183/mzaf_981373870220818285.plus.aac.p.m4a"
+                        data-title="Yang Terlupakan" data-artist="Iwan Fals"
+                        data-cover="https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/9b/31/a6/9b31a6f3-8b8c-5443-e7ad-3d8d643b0860/24UMGIM29440.rgb.jpg/100x100bb.jpg">
+                        <span class="music__cover"><img src="https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/9b/31/a6/9b31a6f3-8b8c-5443-e7ad-3d8d643b0860/24UMGIM29440.rgb.jpg/100x100bb.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></span>
+                        <span class="music__meta"><b>Yang Terlupakan</b><em>Iwan Fals</em></span>
+                        <span class="music__bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                    </button>
+                </li>
+                <li>
+                    <button class="music__track" type="button"
+                        data-src="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/cb/aa/23/cbaa23ee-b9c5-9305-db51-b67dd51c6aeb/mzaf_13515984430270809826.plus.aac.p.m4a"
+                        data-title="Sore Tugu Pancoran" data-artist="Iwan Fals"
+                        data-cover="https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/9a/55/97/9a5597a2-2f8e-198d-4773-b4b2ae212da8/24UMGIM29424.rgb.jpg/100x100bb.jpg">
+                        <span class="music__cover"><img src="https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/9a/55/97/9a5597a2-2f8e-198d-4773-b4b2ae212da8/24UMGIM29424.rgb.jpg/100x100bb.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></span>
+                        <span class="music__meta"><b>Sore Tugu Pancoran</b><em>Iwan Fals</em></span>
+                        <span class="music__bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                    </button>
+                </li>
+                <li>
+                    <button class="music__track" type="button"
+                        data-src="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/c5/27/06/c52706e6-60b5-698b-f691-169af8143f87/mzaf_17637458249967040995.plus.aac.p.m4a"
+                        data-title="Ujung Aspal Pondok Gede" data-artist="Iwan Fals"
+                        data-cover="https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/b9/db/26/b9db264b-56bd-7ba1-fef2-e3ade0f2418e/25UMGIM36274.rgb.jpg/100x100bb.jpg">
+                        <span class="music__cover"><img src="https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/b9/db/26/b9db264b-56bd-7ba1-fef2-e3ade0f2418e/25UMGIM36274.rgb.jpg/100x100bb.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></span>
+                        <span class="music__meta"><b>Ujung Aspal Pondok Gede</b><em>Iwan Fals</em></span>
+                        <span class="music__bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                    </button>
+                </li>
+            </ul>
+
+            <div class="music__controls">
+                <button class="music__step" id="music-prev" type="button" aria-label="Lagu sebelumnya">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 5v14l-9-7z"/><rect x="5" y="5" width="2.4" height="14" rx="0.6"/></svg>
+                </button>
+                <button class="music__step" id="music-next" type="button" aria-label="Lagu berikutnya">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 5v14l9-7z"/><rect x="16.6" y="5" width="2.4" height="14" rx="0.6"/></svg>
+                </button>
+                <input class="music__seek" id="music-seek" type="range" min="0" max="30" step="0.1" value="0" aria-label="Posisi lagu">
+                <span class="music__time" id="music-time">0:00 / 0:30</span>
+            </div>
+
+            <div class="music__foot">
+                <span class="music__vol">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 9.5h3L12 5v14l-5-4.5H4z" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 8.5a5 5 0 0 1 0 7M18.8 6a8.5 8.5 0 0 1 0 12" stroke-linecap="round"/></svg>
+                    <input class="music__range" id="music-volume" type="range" min="0" max="1" step="0.01" value="0.5" aria-label="Volume musik">
+                </span>
+                <a class="music__full" id="music-full" href="https://www.youtube.com/results?search_query=Iwan+Fals+Bento" target="_blank" rel="noopener" data-cursor="hover">
+                    Versi penuh
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="music__bar">
+            <button class="music__play" id="music-play" type="button" aria-label="Putar musik" aria-pressed="false" data-cursor="hover">
+                <svg class="music__icon music__icon--play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.3v13.4L19 12z"/></svg>
+                <svg class="music__icon music__icon--pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="7" y="5" width="3.6" height="14" rx="0.8"/><rect x="13.4" y="5" width="3.6" height="14" rx="0.8"/></svg>
+            </button>
+            <button class="music__open" id="music-open" type="button" aria-expanded="false" aria-controls="music-panel" aria-label="Buka playlist Iwan Fals" data-cursor="hover">
+                <span class="music__eq" aria-hidden="true"><i></i><i></i><i></i></span>
+                <span class="music__now">
+                    <b id="music-title">Bento</b>
+                    <em id="music-artist">Iwan Fals &amp; Swami</em>
+                </span>
+                <svg class="music__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 15 6-6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+        </div>
+    </aside>
+
     <main class="site-main" id="main">
         <section class="hero shell" id="home">
             <div class="hero__meta">

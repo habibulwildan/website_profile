@@ -439,4 +439,300 @@
     tickClock();
     window.setInterval(tickClock, 20000);
   }
+
+  /* ---------------------------------------------------------------- music player */
+  const music = document.getElementById("music");
+  const musicPanel = document.getElementById("music-panel");
+  const musicOpen = document.getElementById("music-open");
+  const musicPlay = document.getElementById("music-play");
+  const musicPrev = document.getElementById("music-prev");
+  const musicNext = document.getElementById("music-next");
+  const musicSeek = document.getElementById("music-seek");
+  const musicTime = document.getElementById("music-time");
+  const musicVolume = document.getElementById("music-volume");
+  const musicTitleEl = document.getElementById("music-title");
+  const musicArtistEl = document.getElementById("music-artist");
+  const musicFull = document.getElementById("music-full");
+  const musicTracks = Array.from(document.querySelectorAll(".music__track"));
+
+  if (music && musicPanel && musicTracks.length) {
+    const audio = new Audio();
+    audio.preload = "none";
+
+    const store = {
+      get(key, fallback) {
+        try {
+          const value = window.localStorage.getItem(key);
+          return value === null ? fallback : value;
+        } catch (_) {
+          return fallback;
+        }
+      },
+      set(key, value) {
+        try {
+          window.localStorage.setItem(key, String(value));
+        } catch (_) {
+          /* noop */
+        }
+      },
+    };
+
+    const formatTime = (seconds) => {
+      const total = Number.isFinite(seconds) && seconds > 0 ? Math.floor(seconds) : 0;
+      return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, "0")}`;
+    };
+
+    let index = Math.min(
+      musicTracks.length - 1,
+      Math.max(0, Number.parseInt(store.get("wildan:music-track", "0"), 10) || 0)
+    );
+    let panelOpen = false;
+    let wantsPlay = false;
+    let failures = 0;
+    let progressFrame = 0;
+
+    const savedVolume = Number.parseFloat(store.get("wildan:music-volume", "0.5"));
+    audio.volume = Number.isFinite(savedVolume) ? Math.min(1, Math.max(0, savedVolume)) : 0.5;
+    if (musicVolume) musicVolume.value = String(audio.volume);
+
+    const currentTrack = () => musicTracks[index];
+
+    const paintProgress = () => {
+      const duration = audio.duration;
+      if (!Number.isFinite(duration) || duration <= 0) return;
+
+      if (musicSeek) {
+        musicSeek.max = String(duration);
+        if (document.activeElement !== musicSeek) {
+          musicSeek.value = String(Math.min(audio.currentTime, duration));
+        }
+      }
+      if (musicTime) {
+        musicTime.textContent = `${formatTime(audio.currentTime)} / ${formatTime(duration)}`;
+      }
+    };
+
+    const paint = () => {
+      const track = currentTrack();
+      const playing = !audio.paused && !audio.ended;
+
+      musicTracks.forEach((node, i) => {
+        const active = i === index;
+        node.classList.toggle("is-active", active);
+        if (active) {
+          node.setAttribute("aria-current", "true");
+        } else {
+          node.removeAttribute("aria-current");
+        }
+      });
+
+      if (musicTitleEl) musicTitleEl.textContent = track.dataset.title || "";
+      if (musicArtistEl) musicArtistEl.textContent = track.dataset.artist || "Iwan Fals";
+      if (musicFull) {
+        const query = encodeURIComponent(`Iwan Fals ${track.dataset.title || ""}`.trim());
+        musicFull.href = `https://www.youtube.com/results?search_query=${query}`;
+      }
+      if (musicPlay) {
+        musicPlay.setAttribute("aria-pressed", String(playing));
+        musicPlay.setAttribute("aria-label", playing ? "Jeda musik" : "Putar musik");
+      }
+      music.classList.toggle("is-playing", playing);
+    };
+
+    const setMediaSession = () => {
+      if (!("mediaSession" in navigator) || !("MediaMetadata" in window)) return;
+
+      const track = currentTrack();
+      try {
+        navigator.mediaSession.metadata = new window.MediaMetadata({
+          title: track.dataset.title || "",
+          artist: track.dataset.artist || "Iwan Fals",
+          album: "Iwan Fals — cuplikan",
+          artwork: track.dataset.cover
+            ? [{ src: track.dataset.cover, sizes: "100x100", type: "image/jpeg" }]
+            : [],
+        });
+      } catch (_) {
+        /* noop */
+      }
+    };
+
+    const playCurrent = () => {
+      music.classList.add("is-touched");
+      wantsPlay = true;
+      setMediaSession();
+
+      if (!audio.getAttribute("src")) {
+        audio.src = currentTrack().dataset.src;
+      }
+
+      try {
+        const attempt = audio.play();
+        if (attempt && typeof attempt.catch === "function") {
+          attempt.catch(() => {
+            wantsPlay = false;
+            paint();
+          });
+        }
+      } catch (_) {
+        wantsPlay = false;
+        paint();
+      }
+    };
+
+    const pauseCurrent = () => {
+      wantsPlay = false;
+      audio.pause();
+    };
+
+    const selectTrack = (next, play = false) => {
+      index = (next + musicTracks.length) % musicTracks.length;
+      const track = currentTrack();
+
+      audio.src = track.dataset.src;
+      if (musicSeek) {
+        musicSeek.max = "30";
+        musicSeek.value = "0";
+      }
+      if (musicTime) musicTime.textContent = "0:00 / 0:30";
+
+      store.set("wildan:music-track", index);
+      paint();
+      setMediaSession();
+
+      if (play) playCurrent();
+    };
+
+    audio.addEventListener("play", () => {
+      failures = 0;
+      paint();
+      if (!progressFrame) {
+        const loop = () => {
+          paintProgress();
+          progressFrame = audio.paused ? 0 : requestAnimationFrame(loop);
+        };
+        progressFrame = requestAnimationFrame(loop);
+      }
+    });
+
+    audio.addEventListener("pause", () => {
+      paint();
+      paintProgress();
+    });
+
+    audio.addEventListener("timeupdate", paintProgress);
+    audio.addEventListener("loadedmetadata", paintProgress);
+
+    audio.addEventListener("ended", () => {
+      if (!wantsPlay) {
+        paint();
+        return;
+      }
+      selectTrack(index + 1, true);
+    });
+
+    audio.addEventListener("error", () => {
+      failures += 1;
+
+      if (failures >= musicTracks.length) {
+        wantsPlay = false;
+        paint();
+        if (musicTime) musicTime.textContent = "Gagal memuat";
+        return;
+      }
+
+      selectTrack(index + 1, wantsPlay);
+    });
+
+    const setPanel = (open) => {
+      panelOpen = open;
+      music.classList.toggle("is-open", open);
+      musicOpen?.setAttribute("aria-expanded", String(open));
+      musicPanel.setAttribute("aria-hidden", String(!open));
+      musicPanel.inert = !open;
+
+      if (!open) return;
+
+      const node = musicTracks[index];
+      window.setTimeout(() => {
+        node?.focus({ preventScroll: true });
+
+        const list = document.getElementById("music-list");
+        if (!list || !node) return;
+
+        const top = node.offsetTop - list.offsetTop;
+        const bottom = top + node.offsetHeight;
+
+        if (top < list.scrollTop) {
+          list.scrollTop = top;
+        } else if (bottom > list.scrollTop + list.clientHeight) {
+          list.scrollTop = bottom - list.clientHeight;
+        }
+      }, 60);
+    };
+
+    musicOpen?.addEventListener("click", () => {
+      setPanel(!panelOpen);
+      if (!panelOpen) musicOpen.focus({ preventScroll: true });
+    });
+
+    musicPlay?.addEventListener("click", () => {
+      failures = 0;
+      if (audio.paused || audio.ended) {
+        playCurrent();
+      } else {
+        pauseCurrent();
+      }
+    });
+
+    musicPrev?.addEventListener("click", () => {
+      failures = 0;
+      selectTrack(index - 1, true);
+    });
+
+    musicNext?.addEventListener("click", () => {
+      failures = 0;
+      selectTrack(index + 1, true);
+    });
+
+    musicTracks.forEach((node, i) => {
+      node.addEventListener("click", () => {
+        failures = 0;
+        if (i === index) {
+          if (audio.paused || audio.ended) playCurrent();
+          else pauseCurrent();
+        } else {
+          selectTrack(i, true);
+        }
+      });
+    });
+
+    musicSeek?.addEventListener("input", () => {
+      const value = Number.parseFloat(musicSeek.value);
+      if (!Number.isFinite(value)) return;
+      if (Number.isFinite(audio.duration)) {
+        audio.currentTime = Math.min(value, audio.duration);
+      }
+    });
+
+    musicVolume?.addEventListener("input", () => {
+      const value = Number.parseFloat(musicVolume.value);
+      audio.volume = Number.isFinite(value) ? Math.min(1, Math.max(0, value)) : 0.5;
+      audio.muted = audio.volume === 0;
+      store.set("wildan:music-volume", audio.volume);
+    });
+
+    document.addEventListener("pointerdown", (event) => {
+      if (!panelOpen || music.contains(event.target)) return;
+      setPanel(false);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape" || !panelOpen) return;
+      setPanel(false);
+      musicOpen?.focus({ preventScroll: true });
+    });
+
+    paint();
+  }
 })();
